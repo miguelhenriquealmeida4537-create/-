@@ -1,4 +1,5 @@
 import { SectionPlaceholder } from '@/dev/SectionPlaceholder'
+import { Hero } from '@/sections/hero/Hero'
 
 /**
  * Seções da página inicial, na ordem final.
@@ -7,14 +8,7 @@ import { SectionPlaceholder } from '@/dev/SectionPlaceholder'
 export function HomeSections() {
   return (
     <>
-      <SectionPlaceholder
-        id="topo"
-        level={1}
-        title="Casa da Pizza — Hero"
-        stage="Etapa 5.2"
-        description="Abertura cinematográfica com fotografia real e o slogan “Da nossa casa, pra sua casa”. Aguardando fotografias oficiais."
-        className="flex min-h-[85svh] items-center pt-28"
-      />
+      <Hero />
       <SectionPlaceholder
         id="cardapio"
         title="Nosso Cardápio"

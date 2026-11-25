@@ -5,6 +5,7 @@ import { MobileMenu } from '@/components/layout/MobileMenu'
 import { mainNav } from '@/components/layout/navigation'
 import { Button, Container } from '@/components/ui'
 import { useScrolled } from '@/hooks/useScrolled'
+import { useFeaturedLogoVisible } from '@/lib/brand-presence'
 import { cn } from '@/lib/cn'
 
 const MENU_ID = 'menu-principal'
@@ -17,6 +18,8 @@ const MENU_ID = 'menu-principal'
  */
 export function Header() {
   const scrolled = useScrolled(24)
+  // Enquanto o selo grande do Hero está visível, a logo do Header se recolhe
+  const logoHidden = useFeaturedLogoVisible()
   const [menuOpen, setMenuOpen] = useState(false)
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
@@ -40,7 +43,12 @@ export function Header() {
           <a
             href="#topo"
             aria-label="Casa da Pizza — voltar ao início"
-            className="-ml-1 shrink-0 rounded-full"
+            aria-hidden={logoHidden || undefined}
+            tabIndex={logoHidden ? -1 : undefined}
+            className={cn(
+              '-ml-1 shrink-0 rounded-full transition-[opacity,translate] duration-(--duration-slow) ease-(--ease-brand)',
+              logoHidden && 'pointer-events-none -translate-y-2 opacity-0',
+            )}
           >
             <Logo
               size={56}

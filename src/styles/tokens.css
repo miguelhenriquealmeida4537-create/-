@@ -160,6 +160,17 @@
   --duration-base: 250ms; /* hover, deslocamentos pequenos */
   --duration-slow: 500ms; /* entradas de conteúdo */
 
+  /* Indicador de rolagem do Hero (desligado com redução de movimento) */
+  --animate-scroll-cue: scroll-cue 2.4s var(--ease-brand) infinite;
+  @keyframes scroll-cue {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(200%);
+    }
+  }
+
   /*
    * BREAKPOINTS (padrão Tailwind, mobile-first)
    *   base < 640 celular · sm 640 · md 768 tablet · lg 1024 · xl 1280 desktop · 2xl 1536

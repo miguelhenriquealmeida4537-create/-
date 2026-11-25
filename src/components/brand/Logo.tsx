@@ -1,3 +1,4 @@
+import type { Ref } from 'react'
 import { cn } from '@/lib/cn'
 
 /*
@@ -30,8 +31,16 @@ const WEBP_SRCSET = toSrcSet(webp)
 const FALLBACK = Object.entries(webp).find(([p]) => p.endsWith('-256.webp'))?.[1]
 
 interface LogoProps {
-  /** Diâmetro exibido em px CSS. O navegador escolhe o arquivo ideal para a tela. */
+  /**
+   * Diâmetro exibido em px CSS. O navegador escolhe o arquivo ideal para a tela.
+   * Com `fluid`, é só o tamanho de referência e o diâmetro vem do className.
+   */
   size: number
+  /** Diâmetro controlado por classes responsivas (ex.: "size-36 lg:size-88"). */
+  fluid?: boolean
+  /** Atributo sizes quando `fluid` (ex.: "(min-width: 1024px) 352px, 144px"). */
+  sizes?: string
+  ref?: Ref<HTMLImageElement>
   /** Texto alternativo. Use "" quando um link ao redor já tiver rótulo. */
   alt?: string
   /** Carregamento prioritário (logo visível na primeira tela). */
@@ -43,14 +52,18 @@ export function Logo({
   size,
   alt = 'Casa da Pizza — Da nossa casa, pra sua casa',
   priority = false,
+  fluid = false,
+  sizes: sizesProp,
+  ref,
   className,
 }: LogoProps) {
-  const sizes = `${size}px`
+  const sizes = sizesProp ?? `${size}px`
   return (
     <picture>
       <source type="image/avif" srcSet={AVIF_SRCSET} sizes={sizes} />
       <source type="image/webp" srcSet={WEBP_SRCSET} sizes={sizes} />
       <img
+        ref={ref}
         src={FALLBACK}
         alt={alt}
         width={size}
@@ -60,7 +73,7 @@ export function Logo({
         fetchPriority={priority ? 'high' : 'auto'}
         draggable={false}
         className={cn('block aspect-square select-none', className)}
-        style={{ width: size, height: size }}
+        style={fluid ? undefined : { width: size, height: size }}
       />
     </picture>
   )

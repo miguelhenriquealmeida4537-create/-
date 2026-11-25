@@ -65,7 +65,7 @@ scripts/font-preload.ts  pré-carrega as fontes críticas no index.html
 - **Utilitários de interação** (`globals.css`): `link-underline`, `interactive-lift`.
 - **Movimento** (`src/components/motion`): `Reveal`, `Parallax`, `SplitText`.
 
-Página oficial em construção: `/` (Header, espaços reservados das seções, Footer).
+Página oficial em construção: `/` (Header, Hero, espaços reservados das seções, Footer).
 Telas de demonstração (temporárias, `src/dev`): `/?demo=identidade` · `/?demo=movimento`.
 
 ## Marca
@@ -84,6 +84,8 @@ Telas de demonstração (temporárias, `src/dev`): `/?demo=identidade` · `/?dem
 - **Campo ausente = pendente**: o rodapé mostra "A confirmar"; seções sem dados não exibem
   valores inventados. Preencher somente com informações oficiais da Casa da Pizza.
 - Horários em `America/Sao_Paulo`; "Aberto agora" calculado por `src/lib/opening-hours.ts`.
+- **Foto do Hero**: `src/content/media.ts` (requisitos no arquivo). Sem foto, o Hero exibe um
+  espaço reservado identificado. Nunca usar imagem gerada por IA como fotografia de produto.
 
 ## Convenções
 
