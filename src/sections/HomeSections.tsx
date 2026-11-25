@@ -1,5 +1,6 @@
 import { SectionPlaceholder } from '@/dev/SectionPlaceholder'
 import { Hero } from '@/sections/hero/Hero'
+import { MenuSection } from '@/sections/menu/MenuSection'
 
 /**
  * Seções da página inicial, na ordem final.
@@ -9,12 +10,7 @@ export function HomeSections() {
   return (
     <>
       <Hero />
-      <SectionPlaceholder
-        id="cardapio"
-        title="Nosso Cardápio"
-        stage="Etapa 5.3"
-        description="Categorias e produtos com detalhe animado. Aguardando o cardápio oficial."
-      />
+      <MenuSection />
       <SectionPlaceholder
         id="destaques"
         title="Mais vendidos, combos e promoções"

@@ -10,6 +10,15 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react(), tailwindcss(), seoFiles(env.VITE_SITE_URL), fontPreload()],
+    define: {
+      /*
+       * Conteúdo de TESTE (src/dev/demo-menu.ts): constante de build para que,
+       * sem a flag, os dados de teste sejam eliminados do bundle de produção.
+       */
+      __SHOW_DEMO_CONTENT__: JSON.stringify(
+        mode === 'development' || env.VITE_SHOW_DEMO_CONTENT === 'true',
+      ),
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),

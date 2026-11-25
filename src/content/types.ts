@@ -85,9 +85,41 @@ export interface ImageAsset {
 
 /** Preço em centavos para evitar erros de arredondamento. */
 export interface PriceOption {
+  /** Identificador do tamanho/variação (necessário para preços por tamanho). */
+  id?: string
   /** Tamanho/variação, ex.: "Média (6 fatias)". Ausente = preço único. */
   label?: string
+  /** Detalhe opcional, ex.: "6 fatias · 30 cm" */
+  detail?: string
   amountCents: number
+}
+
+/** Uma escolha dentro de um grupo de opções (ex.: uma borda, um adicional). */
+export interface OptionChoice {
+  id: string
+  label: string
+  description?: string
+  /** Acréscimo ao preço (0 = incluso). */
+  priceDeltaCents: number
+  /** Acréscimo específico por tamanho (PriceOption.id → centavos). Sobrepõe priceDeltaCents. */
+  priceDeltaBySize?: Record<string, number>
+  available?: boolean
+}
+
+/**
+ * Grupo de opções do produto.
+ *  - single: escolha exatamente uma (ex.: borda). Se required, a primeira vem marcada.
+ *  - multiple: escolha de `min` a `max` itens (ex.: adicionais).
+ * O tamanho NÃO é um grupo: vem de Product.prices.
+ */
+export interface OptionGroup {
+  id: string
+  label: string
+  type: 'single' | 'multiple'
+  required: boolean
+  min?: number
+  max?: number
+  choices: OptionChoice[]
 }
 
 export type ProductTag = 'vegetariano' | 'vegano' | 'picante' | 'novidade' | 'sem-lactose'
@@ -107,7 +139,10 @@ export interface Product {
   description?: string
   ingredients?: string[]
   image?: ImageAsset
+  /** Um item por tamanho. Um único item = preço único. */
   prices: PriceOption[]
+  /** Borda, adicionais etc. */
+  optionGroups?: OptionGroup[]
   tags?: ProductTag[]
   /** false = esgotado/temporariamente indisponível */
   available: boolean
