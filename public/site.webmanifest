@@ -1,0 +1,10 @@
+{
+  "name": "Casa da Pizza",
+  "short_name": "Casa da Pizza",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
