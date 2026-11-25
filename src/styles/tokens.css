@@ -54,6 +54,8 @@
 
   /* ---------- Layout ---------- */
   --container-site: 80rem; /* 1280px */
+  /* Altura reservada para cabeçalhos fixos ao rolar até âncoras */
+  --spacing-scroll-offset: 5rem;
 
   /* ---------- Movimento ---------- */
   --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);

@@ -8,6 +8,8 @@
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /* Âncoras param abaixo de cabeçalhos fixos (vale para rolagem nativa e Lenis) */
+    scroll-padding-top: var(--spacing-scroll-offset);
   }
 
   body {
@@ -81,19 +83,33 @@
 /* ---------- prefers-reduced-motion ---------- */
 /*
  * Rede de segurança global para CSS. As animações GSAP e o Lenis
- * respeitam a mesma preferência via JavaScript (Etapa 3).
+ * respeitam a mesma preferência via MotionPreferenceProvider.
+ * A escolha manual (html[data-motion]) tem prioridade sobre o sistema.
  */
 @media (prefers-reduced-motion: reduce) {
-  html {
+  html:not([data-motion='full']) {
     scroll-behavior: auto;
   }
 
-  *,
-  *::before,
-  *::after {
+  html:not([data-motion='full']) *,
+  html:not([data-motion='full']) *::before,
+  html:not([data-motion='full']) *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+html[data-motion='reduce'] {
+  scroll-behavior: auto;
+}
+
+html[data-motion='reduce'] *,
+html[data-motion='reduce'] *::before,
+html[data-motion='reduce'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }
