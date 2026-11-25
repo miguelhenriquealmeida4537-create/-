@@ -74,8 +74,7 @@ export type ButtonProps = AsButton | AsLink
  * Botão do design system.
  *
  * - Com `href` vira <a> (navegação); sem `href`, <button type="button"> (ação).
- * - Rótulos em Oswald 700 ≥ 19px: contam como "texto grande" na WCAG, então o
- *   branco sobre o vermelho oficial (4.37:1) atende AA.
+ * - Rótulos em Oswald 700, 19px; branco sobre o vermelho da marca: 5.2:1 (AA).
  * - Estados: hover, pressionado, foco por teclado (anel global), desabilitado
  *   e carregando (aria-busy + rótulo preservado para leitores de tela).
  */

@@ -1,0 +1,158 @@
+/**
+ * MODELO DE CONTEÚDO — Casa da Pizza
+ *
+ * Contrato único entre os dados reais (fornecidos pela Casa da Pizza) e a interface.
+ * Hoje os dados vivem em arquivos .ts nesta pasta; no futuro podem vir do Supabase
+ * sem mudar os componentes (eles leem apenas via src/services/).
+ *
+ * Regra: campo opcional ausente = informação PENDENTE. A interface mostra
+ * "A confirmar" (rodapé) ou oculta o bloco — nunca inventa um valor.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Negócio                                                            */
+/* ------------------------------------------------------------------ */
+
+export type Weekday = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'
+
+/** Um intervalo de funcionamento. Ex.: ter–dom, 18:00–23:30. */
+export interface OpeningHoursRange {
+  days: Weekday[]
+  /** "HH:MM" (24h), horário de Brasília */
+  opens: string
+  /** "HH:MM". Se menor que `opens`, fecha após a meia-noite. */
+  closes: string
+}
+
+export interface Address {
+  street: string
+  number: string
+  complement?: string
+  district?: string
+  city: string
+  /** UF, ex.: "SP" */
+  state: string
+  /** "00000-000" */
+  postalCode: string
+  /** Link do Google Maps (ou similar) para "Como chegar" */
+  mapsUrl?: string
+  geo?: { latitude: number; longitude: number }
+}
+
+export type SocialNetwork = 'instagram' | 'facebook' | 'tiktok' | 'youtube'
+
+export interface SocialLink {
+  network: SocialNetwork
+  url: string
+  /** Ex.: "@casadapizza" */
+  handle?: string
+}
+
+export interface DeliveryApp {
+  name: string
+  url: string
+}
+
+export interface BusinessInfo {
+  name: string
+  slogan: string
+  address?: Address
+  /** Formato internacional com DDI, só dígitos: "5511999999999" */
+  phone?: string
+  /** Formato internacional com DDI, só dígitos: "5511999999999" */
+  whatsapp?: string
+  email?: string
+  /** Vazio = horários pendentes */
+  openingHours: OpeningHoursRange[]
+  /** Fuso dos horários (IANA). */
+  timeZone: string
+  social: SocialLink[]
+  deliveryApps: DeliveryApp[]
+}
+
+/* ------------------------------------------------------------------ */
+/* Cardápio                                                           */
+/* ------------------------------------------------------------------ */
+
+export interface ImageAsset {
+  /** URL resolvida pelo Vite (import) ou caminho público */
+  src: string
+  /** Descrição real do que aparece na foto (acessibilidade) */
+  alt: string
+  width: number
+  height: number
+}
+
+/** Preço em centavos para evitar erros de arredondamento. */
+export interface PriceOption {
+  /** Tamanho/variação, ex.: "Média (6 fatias)". Ausente = preço único. */
+  label?: string
+  amountCents: number
+}
+
+export type ProductTag = 'vegetariano' | 'vegano' | 'picante' | 'novidade' | 'sem-lactose'
+
+export interface Category {
+  id: string
+  name: string
+  description?: string
+  /** Ordem de exibição */
+  order: number
+}
+
+export interface Product {
+  id: string
+  categoryId: Category['id']
+  name: string
+  description?: string
+  ingredients?: string[]
+  image?: ImageAsset
+  prices: PriceOption[]
+  tags?: ProductTag[]
+  /** false = esgotado/temporariamente indisponível */
+  available: boolean
+  /** Marca como "mais vendido" (definido pela Casa da Pizza) */
+  bestSeller?: boolean
+}
+
+export interface Combo {
+  id: string
+  name: string
+  description?: string
+  /** Produtos incluídos (ids) ou descrição livre dos itens */
+  items: { productId?: Product['id']; label: string; quantity: number }[]
+  image?: ImageAsset
+  price: PriceOption
+  available: boolean
+}
+
+export interface Promotion {
+  id: string
+  title: string
+  description?: string
+  /** Condições exibidas por extenso (obrigatório em promoções) */
+  terms: string
+  image?: ImageAsset
+  /** Data ISO "AAAA-MM-DD", inclusive */
+  validFrom: string
+  /** Data ISO "AAAA-MM-DD", inclusive. Vencida = some automaticamente. */
+  validUntil: string
+  price?: PriceOption
+}
+
+/* ------------------------------------------------------------------ */
+/* Avaliações                                                         */
+/* ------------------------------------------------------------------ */
+
+export interface Review {
+  id: string
+  /** Como o cliente aparece publicamente na fonte (ex.: "Ana S.") */
+  author: string
+  /** 1 a 5 */
+  rating: 1 | 2 | 3 | 4 | 5
+  text: string
+  /** Data ISO "AAAA-MM-DD" da avaliação original */
+  date: string
+  /** Onde a avaliação foi publicada — obrigatório (transparência) */
+  source: { name: string; url: string }
+}

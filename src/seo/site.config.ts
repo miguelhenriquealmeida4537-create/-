@@ -1,3 +1,5 @@
+import { business } from '@/content/business'
+import type { BusinessInfo, Weekday } from '@/content/types'
 import { env } from '@/lib/env'
 
 /**
@@ -33,13 +35,46 @@ export interface SiteConfig {
   }
 }
 
+const SCHEMA_DAY: Record<Weekday, string> = {
+  mon: 'Mo',
+  tue: 'Tu',
+  wed: 'We',
+  thu: 'Th',
+  fri: 'Fr',
+  sat: 'Sa',
+  sun: 'Su',
+}
+
+/** Converte o modelo de conteúdo para o formato do schema.org (só campos preenchidos). */
+function toSchemaBusiness(b: BusinessInfo): SiteConfig['business'] {
+  return {
+    telephone: b.phone ? `+${b.phone}` : undefined,
+    email: b.email,
+    address: b.address && {
+      streetAddress: [b.address.street, b.address.number, b.address.complement]
+        .filter(Boolean)
+        .join(', '),
+      addressLocality: b.address.city,
+      addressRegion: b.address.state,
+      postalCode: b.address.postalCode,
+      addressCountry: 'BR',
+    },
+    geo: b.address?.geo,
+    openingHours: b.openingHours.map(
+      (r) => `${r.days.map((d) => SCHEMA_DAY[d]).join(',')} ${r.opens}-${r.closes}`,
+    ),
+    servesCuisine: ['Pizza'],
+    sameAs: b.social.map((s) => s.url),
+  }
+}
+
 export const siteConfig: SiteConfig = {
-  name: 'Casa da Pizza',
+  name: business.name,
   url: env.siteUrl,
   locale: 'pt_BR',
   language: 'pt-BR',
-  description: 'Site oficial da Casa da Pizza.', // TODO: descrição definitiva fornecida pelo cliente
+  description: `${business.name} — ${business.slogan}.`, // TODO: descrição definitiva do cliente
   themeColor: '#080808',
-  ogImage: undefined, // TODO: /og/og-default.jpg (1200×630) quando a arte existir
-  business: {},
+  ogImage: undefined, // TODO: /og/og-default.jpg (1200×630) quando houver foto oficial
+  business: toSchemaBusiness(business),
 }

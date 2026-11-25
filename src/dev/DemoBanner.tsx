@@ -11,8 +11,9 @@ const options: { value: MotionPreference; label: string }[] = [
 ]
 
 const screens = [
-  { href: '/', label: 'Identidade (Etapa 4)' },
-  { href: '/?demo=movimento', label: 'Movimento (Etapa 3)' },
+  { href: '/', label: 'Página oficial (em construção)', demo: null },
+  { href: '/?demo=identidade', label: 'Identidade (Etapa 4)', demo: 'identidade' },
+  { href: '/?demo=movimento', label: 'Movimento (Etapa 3)', demo: 'movimento' },
 ]
 
 interface DemoBannerProps {
@@ -34,7 +35,7 @@ export function DemoBanner({ stage }: DemoBannerProps) {
         <p className="flex items-center gap-2 text-small">
           <FlaskConical className="size-4 shrink-0 text-accent" aria-hidden="true" />
           <span>
-            <strong className="font-semibold tracking-wide text-accent uppercase">
+            <strong className="font-semibold tracking-wide text-foreground uppercase">
               Demonstração técnica
             </strong>{' '}
             <span className="text-foreground-muted">
@@ -83,10 +84,7 @@ export function DemoBanner({ stage }: DemoBannerProps) {
       <nav aria-label="Telas de demonstração" className="border-t border-border">
         <ul className="mx-auto flex w-full max-w-site gap-5 overflow-x-auto px-gutter py-2 text-small">
           {screens.map((sc) => {
-            const current =
-              sc.href === '/'
-                ? !window.location.search.includes('demo=')
-                : window.location.search.includes(sc.href.slice(2))
+            const current = new URLSearchParams(window.location.search).get('demo') === sc.demo
             return (
               <li key={sc.href} className="shrink-0">
                 <a

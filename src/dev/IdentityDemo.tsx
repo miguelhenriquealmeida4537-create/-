@@ -35,7 +35,7 @@ const palette = [
   {
     name: 'Vermelho',
     token: 'brand-red',
-    hex: '#ED1C2E',
+    hex: '#DB0102',
     role: 'Ação principal e destaques — com moderação',
     swatch: 'bg-brand-red',
     text: 'text-brand-white',
@@ -78,8 +78,8 @@ const contrast: { fg: string; bg: string; ratio: string; verdict: Verdict; sampl
   {
     fg: 'Vermelho',
     bg: 'Preto',
-    ratio: '4.58',
-    verdict: 'aa',
+    ratio: '3.83',
+    verdict: 'large',
     sample: 'bg-brand-black text-brand-red',
   },
   {
@@ -99,8 +99,8 @@ const contrast: { fg: string; bg: string; ratio: string; verdict: Verdict; sampl
   {
     fg: 'Branco',
     bg: 'Vermelho',
-    ratio: '4.37',
-    verdict: 'large',
+    ratio: '5.23',
+    verdict: 'aa',
     sample: 'bg-brand-red text-brand-white',
   },
   {
@@ -113,7 +113,7 @@ const contrast: { fg: string; bg: string; ratio: string; verdict: Verdict; sampl
   {
     fg: 'Vermelho',
     bg: 'Cinza',
-    ratio: '2.89',
+    ratio: '2.42',
     verdict: 'avoid',
     sample: 'bg-brand-gray text-brand-red',
   },
@@ -122,7 +122,7 @@ const contrast: { fg: string; bg: string; ratio: string; verdict: Verdict; sampl
 const verdictLabel: Record<Verdict, { text: string; className: string }> = {
   aa: { text: 'AA · qualquer texto', className: 'text-accent-secondary' },
   large: { text: 'Só texto grande/ícones', className: 'text-foreground-muted' },
-  avoid: { text: 'Evitar', className: 'text-accent' },
+  avoid: { text: 'Evitar', className: 'text-foreground' },
 }
 
 const fonts = [
@@ -711,9 +711,9 @@ export function IdentityDemo() {
             <Label>Estados do vermelho</Label>
             <ul className="flex gap-3">
               {[
-                ['Repouso', 'bg-accent', '#ED1C2E'],
-                ['Hover', 'bg-accent-hover', '#D41526'],
-                ['Pressionado', 'bg-accent-active', '#B8101F'],
+                ['Repouso', 'bg-accent', '#DB0102'],
+                ['Hover', 'bg-accent-hover', '#B80102'],
+                ['Pressionado', 'bg-accent-active', '#9A0101'],
               ].map(([label, bg, hex]) => (
                 <li key={label} className="flex flex-1 flex-col gap-2">
                   <span className={cn('h-12 rounded-sm', bg)} />

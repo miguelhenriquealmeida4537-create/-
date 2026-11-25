@@ -178,7 +178,7 @@ export function MotionDemo() {
         </div>
         <p className="mt-8 text-small text-foreground-muted">
           Fim da demonstração ·{' '}
-          <a href="/" className="link-underline">
+          <a href="/?demo=identidade" className="link-underline">
             ver identidade visual (Etapa 4)
           </a>
         </p>

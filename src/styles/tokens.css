@@ -9,6 +9,9 @@
  * Regra de ouro do vermelho: ele é o "tempero", não o prato.
  * Proporção de referência: preto 60% · branco 25% · cinza 8% · vermelho ≤ 5% · verde ≤ 2%.
  * Vermelho = ação principal, destaque pontual e estados ativos. Nunca fundo de seções inteiras.
+ *
+ * Vermelho como TEXTO sobre o preto: 3.8:1 — só em texto grande (≥ 24px, ou ≥ 18.66px
+ * em negrito) e elementos gráficos. Texto pequeno: sempre branco/cinza claro sobre escuro.
  */
 @theme {
   /* ======================================================================
@@ -16,7 +19,7 @@
    * ====================================================================== */
   --color-brand-black: #080808;
   --color-brand-white: #ffffff;
-  --color-brand-red: #ed1c2e;
+  --color-brand-red: #db0102; /* alinhado à logo oficial (Etapa 5) */
   --color-brand-gray: #333333;
   --color-brand-green: #72933a;
 
@@ -38,9 +41,9 @@
   --color-border-strong: #5c5c5c; /* 3.0:1 — contorno de controles interativos */
 
   /* ---------- Acento (vermelho) e estados ---------- */
-  --color-accent: var(--color-brand-red); /* repouso */
-  --color-accent-hover: #d41526; /* hover — branco sobre ele: 5.3:1 */
-  --color-accent-active: #b8101f; /* pressionado — branco sobre ele: 6.7:1 */
+  --color-accent: var(--color-brand-red); /* repouso — branco sobre ele: 5.2:1 */
+  --color-accent-hover: #b80102; /* hover — branco sobre ele: 6.9:1 */
+  --color-accent-active: #9a0101; /* pressionado — branco sobre ele: 8.8:1 */
   --color-accent-secondary: var(--color-brand-green); /* 5.7:1 — detalhes */
 
   /* ---------- Foco ---------- */
@@ -101,8 +104,7 @@
   --text-eyebrow--line-height: 1;
   --text-eyebrow--letter-spacing: 0.18em;
 
-  /* Rótulos de botão: ≥ 18.66px em negrito = "texto grande" na WCAG.
-     Garante contraste AA do branco sobre o vermelho oficial (4.37:1 ≥ 3:1). */
+  /* Rótulos de botão: Oswald 700, 19px. Branco sobre o vermelho: 5.2:1 (AA). */
   --text-button: 1.1875rem; /* 19px · Oswald 700 */
   --text-button--line-height: 1;
   --text-button--letter-spacing: 0.06em;
@@ -146,7 +148,7 @@
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.5);
   --shadow-md: 0 10px 30px -12px rgb(0 0 0 / 0.7);
   --shadow-lg: 0 30px 60px -24px rgb(0 0 0 / 0.85);
-  --shadow-glow: 0 12px 36px -12px rgb(237 28 46 / 0.55); /* só no hover do botão primário */
+  --shadow-glow: 0 12px 36px -12px rgb(219 1 2 / 0.55); /* só no hover do botão primário */
   --inset-shadow-highlight: inset 0 1px 0 rgb(255 255 255 / 0.06); /* borda superior de luz */
 
   /* ======================================================================

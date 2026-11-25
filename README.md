@@ -65,7 +65,25 @@ scripts/font-preload.ts  pré-carrega as fontes críticas no index.html
 - **Utilitários de interação** (`globals.css`): `link-underline`, `interactive-lift`.
 - **Movimento** (`src/components/motion`): `Reveal`, `Parallax`, `SplitText`.
 
-Telas de demonstração (temporárias, `src/dev`): `/` identidade visual · `/?demo=movimento`.
+Página oficial em construção: `/` (Header, espaços reservados das seções, Footer).
+Telas de demonstração (temporárias, `src/dev`): `/?demo=identidade` · `/?demo=movimento`.
+
+## Marca
+
+- **Logo oficial**: `brand/logo-original.png` (PNG 1254×1254, único arquivo existente — não há vetor).
+- **Selo para o site**: `python3 scripts/process-logo.py` (requer Pillow) recorta apenas o
+  exterior do círculo da corrente, verifica que o interior é idêntico ao original e gera
+  `src/assets/brand/logo-selo-*.{avif,webp}`, ícones em `public/` e o mestre transparente
+  `public/brand/logo-casa-da-pizza-selo.png`. Use sempre `<Logo size={…} />`.
+- **Nunca** recolorir, distorcer, redesenhar ou sobrepor elementos à logo.
+
+## Conteúdo
+
+- Modelo em `src/content/types.ts`; dados em `src/content/*.ts` (negócio, cardápio, destaques,
+  avaliações). Componentes leem via `src/services/`, preparado para migrar ao Supabase.
+- **Campo ausente = pendente**: o rodapé mostra "A confirmar"; seções sem dados não exibem
+  valores inventados. Preencher somente com informações oficiais da Casa da Pizza.
+- Horários em `America/Sao_Paulo`; "Aberto agora" calculado por `src/lib/opening-hours.ts`.
 
 ## Convenções
 
@@ -73,8 +91,9 @@ Telas de demonstração (temporárias, `src/dev`): `/` identidade visual · `/?d
   (`bg-brand-red`). Nunca hexadecimais soltos.
 - **Vermelho com moderação**: ação principal e destaques pontuais (≤ 5% da área). Nunca fundo
   de seções inteiras.
-- **Contraste**: branco sobre vermelho (4.37:1) e branco sobre verde (3.53:1) só para texto
-  grande e ícones — por isso rótulos de botão usam Oswald 700 ≥ 19px. Foco: anel branco.
+- **Contraste**: vermelho como texto sobre preto (3.83:1) e branco sobre verde (3.53:1) só
+  em texto grande e ícones; texto pequeno sempre branco/cinza claro. Branco sobre o vermelho
+  #DB0102: 5.23:1. Foco: anel branco.
 - **Breakpoints** mobile-first: base < 640 · `sm` 640 · `md` 768 (tablet) · `lg` 1024 · `xl` 1280 (desktop) · `2xl` 1536.
 - **Movimento**: toda animação deve respeitar `prefers-reduced-motion`.
 - **Conteúdo**: apenas informações reais fornecidas pela Casa da Pizza.
