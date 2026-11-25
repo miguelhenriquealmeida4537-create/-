@@ -22,6 +22,8 @@ import { ProductImage } from '@/sections/menu/ProductImage'
 interface ProductDetailProps {
   product: Product | null
   isDemo: boolean
+  /** data-flip-id do cartão de origem (a foto do detalhe usa o mesmo) */
+  flipId: string
   /** Imagem do cartão de origem (para a transição Flip de ida e volta) */
   originRef: RefObject<HTMLElement | null>
   onClosed: () => void
@@ -36,7 +38,13 @@ const deltaLabel = (cents: number) => (cents === 0 ? 'Incluso' : `+ ${formatPric
  * foto à esquerda e as opções à direita. A foto "voa" do cartão para o detalhe
  * (GSAP Flip) e volta ao fechar. Com redução de movimento, abre e fecha sem animação.
  */
-export function ProductDetail({ product, isDemo, originRef, onClosed }: ProductDetailProps) {
+export function ProductDetail({
+  product,
+  isDemo,
+  flipId,
+  originRef,
+  onClosed,
+}: ProductDetailProps) {
   const reducedMotion = useReducedMotion()
   const imageRef = useRef<HTMLDivElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -135,6 +143,7 @@ export function ProductDetail({ product, isDemo, originRef, onClosed }: ProductD
         <ProductDetailContent
           key={`${shown.id}-${session}`}
           product={shown}
+          flipId={flipId}
           isDemo={isDemo}
           imageRef={imageRef}
           panelRef={panelRef}
@@ -147,13 +156,21 @@ export function ProductDetail({ product, isDemo, originRef, onClosed }: ProductD
 
 interface ContentProps {
   product: Product
+  flipId: string
   isDemo: boolean
   imageRef: RefObject<HTMLDivElement | null>
   panelRef: RefObject<HTMLDivElement | null>
   onClose: () => void
 }
 
-function ProductDetailContent({ product, isDemo, imageRef, panelRef, onClose }: ContentProps) {
+function ProductDetailContent({
+  product,
+  flipId,
+  isDemo,
+  imageRef,
+  panelRef,
+  onClose,
+}: ContentProps) {
   const [selection, setSelection] = useState<ProductSelection>(() => initialSelection(product))
   const { totalCents, lines } = computePrice(product, selection)
   const uid = useId()
@@ -184,7 +201,7 @@ function ProductDetailContent({ product, isDemo, imageRef, panelRef, onClose }: 
         <ProductImage
           ref={imageRef}
           image={product.image}
-          flipId={`produto-${product.id}`}
+          flipId={flipId}
           priority
           className="h-[28dvh] shrink-0 rounded-t-xl md:h-auto md:w-[46%] md:rounded-l-xl md:rounded-tr-none"
         />

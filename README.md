@@ -87,6 +87,9 @@ Telas de demonstração (temporárias, `src/dev`): `/?demo=identidade` · `/?dem
 - **Cardápio**: produtos com tamanhos (`prices`) e grupos de opções (borda, adicionais) com
   acréscimos fixos ou por tamanho; cálculo em `src/lib/pricing.ts`. Detalhe com transição
   GSAP Flip entre cartão e painel.
+- **Destaques**: mais vendidos = `Product.bestSeller` do cardápio (mesmo detalhe e preços);
+  combos com itens vinculados por `productId`; promoções exigem `terms` e validade e só aparecem
+  vigentes (fuso de Brasília, `src/lib/dates.ts`).
 - Horários em `America/Sao_Paulo`; "Aberto agora" calculado por `src/lib/opening-hours.ts`.
 - **Foto do Hero**: `src/content/media.ts` (requisitos no arquivo). Sem foto, o Hero exibe um
   espaço reservado identificado. Nunca usar imagem gerada por IA como fotografia de produto.

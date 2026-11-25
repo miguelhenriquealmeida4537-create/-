@@ -8,7 +8,8 @@
  *   2) VITE_SHOW_DEMO_CONTENT=true ou o projeto roda em modo de desenvolvimento.
  * Remover este arquivo quando o cardápio oficial for cadastrado.
  */
-import type { Category, OptionGroup, PriceOption, Product } from '@/content/types'
+import type { Category, Combo, OptionGroup, PriceOption, Product, Promotion } from '@/content/types'
+import { todayISO } from '@/lib/dates'
 
 const DESC = 'Texto de exemplo para validar o layout. Não é um produto real.'
 
@@ -72,15 +73,29 @@ const pizza = (n: number, categoryId: string, base: number, extra?: Partial<Prod
  * módulo) permite ao build eliminar este arquivo inteiro quando o conteúdo de
  * teste está desligado.
  */
-export function buildDemoMenu(): { categories: Category[]; products: Product[] } {
+export interface DemoMenu {
+  categories: Category[]
+  products: Product[]
+  combos: Combo[]
+  promotions: Promotion[]
+}
+
+/** Data ISO deslocada N dias a partir de hoje (as promoções de teste "andam" com o calendário). */
+const shiftDays = (today: string, n: number) => {
+  const d = new Date(`${today}T12:00:00Z`)
+  d.setUTCDate(d.getUTCDate() + n)
+  return d.toISOString().slice(0, 10)
+}
+
+export function buildDemoMenu(now: Date = new Date()): DemoMenu {
   const products: Product[] = [
-    pizza(1, 'teste-salgadas', 3000),
+    pizza(1, 'teste-salgadas', 3000, { bestSeller: true }),
     pizza(2, 'teste-salgadas', 3200, { tags: ['vegetariano'] }),
-    pizza(3, 'teste-salgadas', 3400),
+    pizza(3, 'teste-salgadas', 3400, { bestSeller: true }),
     pizza(4, 'teste-salgadas', 3600, { tags: ['picante'] }),
     pizza(5, 'teste-salgadas', 3800),
     pizza(6, 'teste-salgadas', 4000, { available: false }),
-    pizza(1, 'teste-doces', 3000, { optionGroups: [extras] }),
+    pizza(1, 'teste-doces', 3000, { optionGroups: [extras], bestSeller: true }),
     pizza(2, 'teste-doces', 3200, { optionGroups: [extras] }),
     {
       id: 'bebida-teste-1',
@@ -102,5 +117,94 @@ export function buildDemoMenu(): { categories: Category[]; products: Product[] }
       available: true,
     },
   ]
-  return { categories, products }
+  const today = todayISO(now)
+
+  const combos: Combo[] = [
+    {
+      id: 'combo-teste-1',
+      name: 'Combo de teste 1',
+      description: 'Composição de exemplo para validar o layout. Não é um combo real.',
+      items: [
+        {
+          productId: 'pizza-teste-teste-salgadas-1',
+          label: 'Pizza de teste 1 (grande)',
+          quantity: 1,
+        },
+        { productId: 'bebida-teste-2', label: 'Bebida de teste 2 (garrafa)', quantity: 1 },
+      ],
+      price: { amountCents: 6000 },
+      serves: 'Serve 2 a 3 pessoas (exemplo)',
+      available: true,
+    },
+    {
+      id: 'combo-teste-2',
+      name: 'Combo de teste 2',
+      description: 'Composição de exemplo para validar o layout. Não é um combo real.',
+      items: [
+        {
+          productId: 'pizza-teste-teste-salgadas-3',
+          label: 'Pizza de teste 3 (grande)',
+          quantity: 2,
+        },
+        {
+          productId: 'pizza-teste-teste-doces-1',
+          label: 'Pizza de teste 1 doce (média)',
+          quantity: 1,
+        },
+        { productId: 'bebida-teste-1', label: 'Bebida de teste 1', quantity: 2 },
+      ],
+      price: { amountCents: 14000 },
+      serves: 'Serve 5 a 6 pessoas (exemplo)',
+      available: true,
+    },
+  ]
+
+  const terms = 'Condições de exemplo para validar o layout. Não é uma oferta real.'
+  const promotions: Promotion[] = [
+    {
+      id: 'promo-teste-a',
+      title: 'Promoção de teste A',
+      highlight: 'Chamada de exemplo',
+      description: 'Descrição de exemplo de uma promoção. Conteúdo de teste.',
+      terms,
+      price: { amountCents: 4500 },
+      productId: 'pizza-teste-teste-salgadas-1',
+      validFrom: shiftDays(today, -2),
+      validUntil: shiftDays(today, 5),
+    },
+    {
+      id: 'promo-teste-b',
+      title: 'Promoção de teste B',
+      description: 'Descrição de exemplo. Termina hoje para testar o rótulo de validade.',
+      terms,
+      validFrom: shiftDays(today, -7),
+      validUntil: today,
+    },
+    {
+      id: 'promo-teste-c',
+      title: 'Promoção de teste C',
+      description: 'Descrição de exemplo com validade longa.',
+      terms,
+      comboId: 'combo-teste-1',
+      validFrom: shiftDays(today, -1),
+      validUntil: shiftDays(today, 30),
+    },
+    // As duas abaixo NÃO devem aparecer: servem para provar o filtro de validade.
+    {
+      id: 'promo-teste-vencida',
+      title: 'Promoção de teste VENCIDA',
+      terms,
+      validFrom: shiftDays(today, -20),
+      validUntil: shiftDays(today, -1),
+    },
+    {
+      id: 'promo-teste-futura',
+      title: 'Promoção de teste FUTURA',
+      terms,
+      validFrom: shiftDays(today, 3),
+      validUntil: shiftDays(today, 20),
+    },
+  ]
+
+  return { categories, products, combos, promotions }
 }

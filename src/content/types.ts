@@ -158,6 +158,8 @@ export interface Combo {
   items: { productId?: Product['id']; label: string; quantity: number }[]
   image?: ImageAsset
   price: PriceOption
+  /** Ex.: "Serve 2 a 3 pessoas" (informado pela Casa da Pizza) */
+  serves?: string
   available: boolean
 }
 
@@ -168,6 +170,11 @@ export interface Promotion {
   /** Condições exibidas por extenso (obrigatório em promoções) */
   terms: string
   image?: ImageAsset
+  /** Chamada curta de destaque, ex.: "2ª pizza pela metade" */
+  highlight?: string
+  /** Vínculo opcional com o cardápio (para abrir o produto/combo) */
+  productId?: Product['id']
+  comboId?: Combo['id']
   /** Data ISO "AAAA-MM-DD", inclusive */
   validFrom: string
   /** Data ISO "AAAA-MM-DD", inclusive. Vencida = some automaticamente. */

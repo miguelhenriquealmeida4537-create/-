@@ -7,8 +7,10 @@ interface ProductImageProps {
   image?: ImageAsset
   /** Liga o cartão ao detalhe na transição Flip */
   flipId: string
-  /** Mostra o texto "Foto do produto" no espaço reservado (não cabe em miniaturas) */
+  /** Mostra o texto do espaço reservado (não cabe em miniaturas) */
   showLabel?: boolean
+  /** Texto do espaço reservado. Padrão: "Foto do produto" */
+  label?: string
   priority?: boolean
   className?: string
   ref?: Ref<HTMLDivElement>
@@ -21,6 +23,7 @@ export function ProductImage({
   image,
   flipId,
   showLabel = true,
+  label = 'Foto do produto',
   priority = false,
   className,
   ref,
@@ -44,11 +47,11 @@ export function ProductImage({
       ) : (
         <div
           role="img"
-          aria-label="Espaço reservado para a foto do produto"
+          aria-label={`Espaço reservado: ${label.toLowerCase()}`}
           className="flex size-full flex-col items-center justify-center gap-2 bg-[repeating-linear-gradient(135deg,rgb(255_255_255/0.04)_0_1px,transparent_1px_12px)] text-foreground-subtle"
         >
           <ImageOff className="size-6" aria-hidden="true" />
-          {showLabel && <span className="text-caption">Foto do produto</span>}
+          {showLabel && <span className="text-caption">{label}</span>}
         </div>
       )}
     </div>

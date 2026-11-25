@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Reveal } from '@/components/motion'
 import { Container, Editorial, Eyebrow, Heading, Pending } from '@/components/ui'
 import type { Product } from '@/content/types'
@@ -9,7 +9,7 @@ import { EASE_BRAND, gsap } from '@/lib/gsap'
 import { CategoryNav } from '@/sections/menu/CategoryNav'
 import { MENU_PANEL_ID as PANEL_ID, tabId } from '@/sections/menu/menu-ids'
 import { ProductCard } from '@/sections/menu/ProductCard'
-import { ProductDetail } from '@/sections/menu/ProductDetail'
+import { useProductDetail } from '@/sections/menu/product-detail-context'
 import { getMenu } from '@/services/menu'
 
 /**
@@ -19,8 +19,6 @@ import { getMenu } from '@/services/menu'
 export function MenuSection() {
   const { sections, isDemo } = getMenu()
   const [activeId, setActiveId] = useState(sections[0]?.category.id ?? '')
-  const [selected, setSelected] = useState<Product | null>(null)
-  const originRef = useRef<HTMLElement | null>(null)
   const gridRef = useRef<HTMLDivElement>(null)
   const firstRender = useRef(true)
   const reducedMotion = useReducedMotion()
@@ -56,12 +54,9 @@ export function MenuSection() {
     }
   }, [activeId, reducedMotion])
 
-  const openProduct = useCallback((product: Product, imageEl: HTMLElement) => {
-    originRef.current = imageEl
-    setSelected(product)
-  }, [])
-
-  const closeProduct = useCallback(() => setSelected(null), [])
+  const { openProduct } = useProductDetail()
+  const openFromCard = (product: Product, imageEl: HTMLElement) =>
+    openProduct(product, imageEl, isDemo)
 
   return (
     <section id="cardapio" aria-labelledby="cardapio-titulo" className="py-section">
@@ -104,20 +99,13 @@ export function MenuSection() {
                   key={product.id}
                   product={product}
                   isDemo={isDemo}
-                  onOpen={openProduct}
+                  onOpen={openFromCard}
                 />
               ))}
             </div>
           </>
         )}
       </Container>
-
-      <ProductDetail
-        product={selected}
-        isDemo={isDemo}
-        originRef={originRef}
-        onClosed={closeProduct}
-      />
     </section>
   )
 }
