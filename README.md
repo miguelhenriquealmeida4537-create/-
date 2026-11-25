@@ -32,9 +32,9 @@ _Project Settings → Environment Variables_.
 
 ```
 src/
-├── styles/        tokens.css (paleta, tipografia, espaçamentos) e globals.css
+├── styles/        tokens.css (design system), fonts.css e globals.css
 ├── components/
-│   ├── ui/        peças básicas reutilizáveis (Button, Heading…)
+│   ├── ui/        Button, Heading, Container, Eyebrow, Editorial
 │   ├── layout/    Header, Footer, SkipLink
 │   ├── motion/    componentes de animação (GSAP)
 │   └── reactbits/ componentes React Bits adaptados à marca
@@ -47,15 +47,34 @@ src/
 ├── content/       textos reais da marca
 ├── types/         tipos compartilhados
 └── dev/           telas temporárias de verificação (remover antes do lançamento)
-scripts/seo-files.ts   gera robots.txt e sitemap.xml no build
+scripts/seo-files.ts     gera robots.txt e sitemap.xml no build
+scripts/font-preload.ts  pré-carrega as fontes críticas no index.html
 ```
+
+## Design system
+
+- **Tokens**: `src/styles/tokens.css` — cores, escala tipográfica, espaçamentos, larguras,
+  raios, sombras e movimento. Gera classes Tailwind (`bg-accent`, `text-h2`, `rounded-lg`,
+  `max-w-narrow`, `gap-stack-md`, `px-gutter`…).
+- **Fontes** (`src/styles/fonts.css`, licença SIL OFL 1.1, cópias em `public/licenses/`):
+  Oswald (títulos) · Inter (texto e interface) · Playfair Display itálico (detalhes editoriais).
+  Hospedadas localmente, só subconjunto latin; Inter e Oswald pré-carregadas no build.
+- **Componentes** (`src/components/ui`): `Button` (primary · secondary · ghost; sm · md · lg;
+  ícones, carregando, desabilitado, link), `Heading` (nível semântico separado do tamanho
+  visual), `Container` (narrow · default · wide · full), `Eyebrow`, `Editorial`.
+- **Utilitários de interação** (`globals.css`): `link-underline`, `interactive-lift`.
+- **Movimento** (`src/components/motion`): `Reveal`, `Parallax`, `SplitText`.
+
+Telas de demonstração (temporárias, `src/dev`): `/` identidade visual · `/?demo=movimento`.
 
 ## Convenções
 
 - **Cores**: use tokens semânticos (`bg-surface`, `text-foreground`, `text-accent`) ou de marca
   (`bg-brand-red`). Nunca hexadecimais soltos.
+- **Vermelho com moderação**: ação principal e destaques pontuais (≤ 5% da área). Nunca fundo
+  de seções inteiras.
 - **Contraste**: branco sobre vermelho (4.37:1) e branco sobre verde (3.53:1) só para texto
-  grande e ícones. Tabela completa em `src/styles/tokens.css`.
+  grande e ícones — por isso rótulos de botão usam Oswald 700 ≥ 19px. Foco: anel branco.
 - **Breakpoints** mobile-first: base < 640 · `sm` 640 · `md` 768 (tablet) · `lg` 1024 · `xl` 1280 (desktop) · `2xl` 1536.
 - **Movimento**: toda animação deve respeitar `prefers-reduced-motion`.
 - **Conteúdo**: apenas informações reais fornecidas pela Casa da Pizza.

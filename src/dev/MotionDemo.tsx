@@ -36,14 +36,14 @@ const principles = [
 function DemoSection({ id, label, children }: { id?: string; label: string; children: ReactNode }) {
   return (
     <section id={id} aria-label={label} className="border-t border-border py-section">
-      <div className="container-site">{children}</div>
+      <div className="mx-auto w-full max-w-site px-gutter">{children}</div>
     </section>
   )
 }
 
 function Tag({ children }: { children: ReactNode }) {
   return (
-    <p className="mb-4 font-mono text-fluid-sm tracking-wider text-accent-secondary">{children}</p>
+    <p className="mb-4 font-mono text-small tracking-wider text-accent-secondary">{children}</p>
   )
 }
 
@@ -52,20 +52,20 @@ export function MotionDemo() {
 
   return (
     <>
-      <DemoBanner />
+      <DemoBanner stage="Etapa 3 · Movimento" />
 
       {/* 1. SplitText ao montar */}
       <section id="topo" aria-label="Título animado" className="py-section">
-        <div className="container-site">
+        <div className="mx-auto w-full max-w-site px-gutter">
           <Tag>&lt;SplitText as=&quot;h1&quot; /&gt;</Tag>
           <SplitText
             as="h1"
-            className="max-w-5xl text-fluid-display leading-[1.05] font-bold tracking-tight"
+            className="max-w-5xl text-display leading-[1.05] font-bold tracking-tight"
           >
             Fundação de movimento e acessibilidade
           </SplitText>
           <Reveal delay={0.4} className="mt-8 flex flex-col gap-6">
-            <p className="max-w-prose text-fluid-lg text-foreground-muted">
+            <p className="max-w-prose text-lead text-foreground-muted">
               Página de teste dos componentes de animação. Role para ver cada um em ação, ou troque
               a preferência de movimento na faixa superior.
             </p>
@@ -91,8 +91,8 @@ export function MotionDemo() {
               className="flex flex-col gap-3 rounded-2xl border border-border bg-surface-raised p-6"
             >
               <Icon className="size-6 text-accent" aria-hidden="true" />
-              <h2 className="text-fluid-lg font-semibold">{title}</h2>
-              <p className="text-fluid-sm text-foreground-muted">{text}</p>
+              <h2 className="text-lead font-semibold">{title}</h2>
+              <p className="text-small text-foreground-muted">{text}</p>
             </li>
           ))}
         </Reveal>
@@ -103,7 +103,7 @@ export function MotionDemo() {
         <div className="grid items-center gap-12 md:grid-cols-2">
           <Reveal>
             <Tag>&lt;Parallax distance={'{80}'} /&gt;</Tag>
-            <h2 className="mb-4 text-fluid-2xl leading-tight font-bold">
+            <h2 className="mb-4 text-h2 leading-tight font-bold">
               A ilustração se move mais devagar que a página.
             </h2>
             <p className="max-w-prose text-foreground-muted">
@@ -123,7 +123,7 @@ export function MotionDemo() {
                 className="h-auto w-full drop-shadow-2xl"
               />
             </Parallax>
-            <figcaption className="text-fluid-sm text-foreground-muted">
+            <figcaption className="text-small text-foreground-muted">
               Ilustração demonstrativa — não representa produto real.
             </figcaption>
           </figure>
@@ -137,7 +137,7 @@ export function MotionDemo() {
           as="h2"
           type="lines"
           onScroll
-          className="max-w-4xl text-fluid-2xl leading-tight font-bold"
+          className="max-w-4xl text-h2 leading-tight font-bold"
         >
           Este parágrafo é dividido em linhas e cada linha sobe de dentro de uma máscara quando
           entra na tela. Se a largura mudar, a divisão é refeita automaticamente.
@@ -148,7 +148,7 @@ export function MotionDemo() {
       <DemoSection label="Demonstração de rolagem suave">
         <Reveal className="flex flex-col gap-6">
           <Tag>Lenis + gsap.ticker</Tag>
-          <h2 className="text-fluid-2xl leading-tight font-bold">Rolagem suave</h2>
+          <h2 className="text-h2 leading-tight font-bold">Rolagem suave</h2>
           <p className="max-w-prose text-foreground-muted">
             No desktop, a roda do mouse é suavizada pelo Lenis, sincronizado ao mesmo relógio do
             GSAP — a barra vermelha no topo acompanha sem atraso. No celular, o toque continua
@@ -176,10 +176,10 @@ export function MotionDemo() {
             <div key={i} className="h-24 rounded-2xl border border-dashed border-border" />
           ))}
         </div>
-        <p className="mt-8 text-fluid-sm text-foreground-muted">
+        <p className="mt-8 text-small text-foreground-muted">
           Fim da demonstração ·{' '}
-          <a href="?demo=fundacao" className="underline underline-offset-4">
-            ver tela da Etapa 2
+          <a href="/" className="link-underline">
+            ver identidade visual (Etapa 4)
           </a>
         </p>
       </DemoSection>

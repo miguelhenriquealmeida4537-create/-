@@ -1,75 +1,165 @@
 /*
- * Tokens de design — Casa da Pizza
+ * DESIGN SYSTEM — Casa da Pizza
  * Direção visual: Modern Pizzeria | Premium Casual
  *
- * Fonte única das cores, tipografia e espaçamentos. O Tailwind v4 gera
- * as classes utilitárias a partir destas variáveis (ex.: bg-brand-red).
+ * Fonte única de cores, tipografia, espaçamentos, bordas, sombras e movimento.
+ * O Tailwind v4 gera as classes a partir destas variáveis
+ * (ex.: --color-accent → bg-accent, --text-h1 → text-h1, --radius-lg → rounded-lg).
  *
- * Contraste WCAG medido (AA texto normal exige 4.5:1; texto grande/UI 3:1):
- *   branco  / preto   20.03  ✔ qualquer texto
- *   vermelho/ preto    4.58  ✔ qualquer texto
- *   preto   / vermelho 4.58  ✔ qualquer texto
- *   branco  / vermelho 4.37  ⚠ só texto grande (≥ 24px ou ≥ 18.66px bold) e ícones
- *   verde   / preto    5.67  ✔ qualquer texto
- *   branco  / verde    3.53  ⚠ só texto grande e ícones
- *   branco  / cinza   12.63  ✔ qualquer texto
- *   vermelho/ cinza    2.89  ✖ evitar
+ * Regra de ouro do vermelho: ele é o "tempero", não o prato.
+ * Proporção de referência: preto 60% · branco 25% · cinza 8% · vermelho ≤ 5% · verde ≤ 2%.
+ * Vermelho = ação principal, destaque pontual e estados ativos. Nunca fundo de seções inteiras.
  */
 @theme {
-  /* ---------- Cores da marca ---------- */
+  /* ======================================================================
+   * CORES — paleta oficial
+   * ====================================================================== */
   --color-brand-black: #080808;
   --color-brand-white: #ffffff;
   --color-brand-red: #ed1c2e;
   --color-brand-gray: #333333;
   --color-brand-green: #72933a;
 
-  /* ---------- Cores semânticas (use estas nos componentes) ---------- */
-  --color-surface: var(--color-brand-black);
-  --color-surface-raised: #121212;
-  --color-surface-muted: var(--color-brand-gray);
-  --color-foreground: var(--color-brand-white);
-  --color-foreground-muted: #b8b8b8; /* 10.2:1 sobre o preto */
-  --color-accent: var(--color-brand-red);
-  --color-accent-secondary: var(--color-brand-green);
-  --color-border: #2a2a2a;
-  --color-focus: var(--color-brand-red);
+  /* ---------- Superfícies ---------- */
+  --color-surface: var(--color-brand-black); /* fundo da página */
+  --color-surface-raised: #121212; /* cartões, painéis */
+  --color-surface-overlay: #1a1a1a; /* menus, camadas acima de cartões */
+  --color-surface-muted: var(--color-brand-gray); /* blocos de apoio */
+  --color-surface-inverse: var(--color-brand-white); /* blocos claros pontuais */
 
-  /* ---------- Tipografia ---------- */
-  /* Provisório: fontes do sistema. As fontes da marca entram na Etapa 4. */
+  /* ---------- Texto (contraste sobre #080808) ---------- */
+  --color-foreground: var(--color-brand-white); /* 20.0:1 */
+  --color-foreground-muted: #b8b8b8; /* 10.1:1 — descrições */
+  --color-foreground-subtle: #8a8a8a; /*  5.8:1 — legendas, metadados */
+  --color-foreground-inverse: var(--color-brand-black);
+
+  /* ---------- Bordas ---------- */
+  --color-border: #2a2a2a; /* decorativa (divisórias) */
+  --color-border-strong: #5c5c5c; /* 3.0:1 — contorno de controles interativos */
+
+  /* ---------- Acento (vermelho) e estados ---------- */
+  --color-accent: var(--color-brand-red); /* repouso */
+  --color-accent-hover: #d41526; /* hover — branco sobre ele: 5.3:1 */
+  --color-accent-active: #b8101f; /* pressionado — branco sobre ele: 6.7:1 */
+  --color-accent-secondary: var(--color-brand-green); /* 5.7:1 — detalhes */
+
+  /* ---------- Foco ---------- */
+  /* Branco: máximo contraste (20:1) em qualquer superfície escura e
+     mantém o vermelho reservado para ações. */
+  --color-focus: var(--color-brand-white);
+
+  /* ======================================================================
+   * TIPOGRAFIA
+   * ====================================================================== */
+  --font-display: 'Oswald Variable', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-display: var(--font-sans);
-
-  /* Escala fluida: cresce suavemente de 360px até 1440px de largura */
-  --text-fluid-sm: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
-  --text-fluid-base: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
-  --text-fluid-lg: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
-  --text-fluid-xl: clamp(1.5rem, 1.3rem + 0.9vw, 2.25rem);
-  --text-fluid-2xl: clamp(2rem, 1.6rem + 1.8vw, 3.5rem);
-  --text-fluid-display: clamp(2.75rem, 1.9rem + 4vw, 6.5rem);
-
-  /* ---------- Espaçamento de seções ---------- */
-  --spacing-section: clamp(4rem, 3rem + 5vw, 9rem);
-  --spacing-gutter: clamp(1rem, 0.6rem + 1.8vw, 2.5rem);
-
-  /* ---------- Layout ---------- */
-  --container-site: 80rem; /* 1280px */
-  /* Altura reservada para cabeçalhos fixos ao rolar até âncoras */
-  --spacing-scroll-offset: 5rem;
-
-  /* ---------- Movimento ---------- */
-  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
-  --duration-fast: 150ms;
-  --duration-base: 300ms;
-  --duration-slow: 600ms;
+    'Inter Variable', 'Inter Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    sans-serif;
+  --font-editorial: 'Playfair Display Variable', Georgia, 'Times New Roman', serif;
 
   /*
-   * Breakpoints: padrão do Tailwind, mobile-first.
-   *   (base) celular  < 640px
-   *   sm  ≥ 640px   celular grande
-   *   md  ≥ 768px   tablet
-   *   lg  ≥ 1024px  tablet horizontal / notebook
-   *   xl  ≥ 1280px  desktop
-   *   2xl ≥ 1536px  desktop amplo
+   * Escala fluida (cresce de 360px a 1440px de largura).
+   * Cada tamanho traz altura de linha e espaçamento entre letras próprios.
+   */
+  --text-display: clamp(3.25rem, 1.9rem + 6vw, 8.5rem); /* 52 → 136px · Oswald */
+  --text-display--line-height: 0.92;
+  --text-display--letter-spacing: -0.005em;
+
+  --text-h1: clamp(2.5rem, 1.75rem + 3.6vw, 5.5rem); /* 40 → 88px · Oswald */
+  --text-h1--line-height: 0.98;
+  --text-h1--letter-spacing: 0em;
+
+  --text-h2: clamp(2rem, 1.5rem + 2.4vw, 3.75rem); /* 32 → 60px · Oswald */
+  --text-h2--line-height: 1.04;
+  --text-h2--letter-spacing: 0.005em;
+
+  --text-h3: clamp(1.5rem, 1.3rem + 1vw, 2.25rem); /* 24 → 36px · Oswald */
+  --text-h3--line-height: 1.12;
+  --text-h3--letter-spacing: 0.01em;
+
+  --text-h4: clamp(1.25rem, 1.18rem + 0.35vw, 1.5rem); /* 20 → 24px · Oswald */
+  --text-h4--line-height: 1.2;
+  --text-h4--letter-spacing: 0.01em;
+
+  --text-editorial: clamp(1.5rem, 1.2rem + 1.5vw, 2.75rem); /* 24 → 44px · Playfair itálico */
+  --text-editorial--line-height: 1.18;
+
+  --text-lead: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem); /* 18 → 22px · Inter */
+  --text-lead--line-height: 1.55;
+
+  --text-body: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem); /* 16 → 17px · Inter */
+  --text-body--line-height: 1.65;
+
+  --text-small: 0.875rem; /* 14px */
+  --text-small--line-height: 1.5;
+
+  --text-caption: 0.75rem; /* 12px */
+  --text-caption--line-height: 1.4;
+  --text-caption--letter-spacing: 0.02em;
+
+  --text-eyebrow: 0.8125rem; /* 13px · Inter maiúsculas */
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.18em;
+
+  /* Rótulos de botão: ≥ 18.66px em negrito = "texto grande" na WCAG.
+     Garante contraste AA do branco sobre o vermelho oficial (4.37:1 ≥ 3:1). */
+  --text-button: 1.1875rem; /* 19px · Oswald 700 */
+  --text-button--line-height: 1;
+  --text-button--letter-spacing: 0.06em;
+  --text-button-lg: 1.375rem; /* 22px */
+  --text-button-lg--line-height: 1;
+  --text-button-lg--letter-spacing: 0.06em;
+
+  /* ======================================================================
+   * ESPAÇAMENTOS (somam-se à escala do Tailwind: 1 = 0.25rem)
+   * ====================================================================== */
+  --spacing-gutter: clamp(1.25rem, 0.8rem + 2vw, 3rem); /* margem lateral: 20 → 48px */
+  --spacing-section: clamp(5rem, 3.5rem + 6vw, 10rem); /* entre seções: 80 → 160px */
+  --spacing-section-sm: clamp(3rem, 2.4rem + 2.6vw, 5rem); /* 48 → 80px */
+  --spacing-stack-xs: 0.5rem; /*  8px — rótulo ↔ campo */
+  --spacing-stack-sm: 1rem; /* 16px — título ↔ texto */
+  --spacing-stack-md: 1.5rem; /* 24px — entre parágrafos/blocos */
+  --spacing-stack-lg: 2.5rem; /* 40px — grupos */
+  --spacing-stack-xl: 4rem; /* 64px — sub-blocos de seção */
+  --spacing-scroll-offset: 5rem; /* âncoras abaixo de cabeçalhos fixos */
+
+  /* ======================================================================
+   * LARGURAS DE CONTAINER
+   * ====================================================================== */
+  --container-narrow: 45rem; /*  720px — textos longos */
+  --container-site: 80rem; /* 1280px — padrão */
+  --container-wide: 96rem; /* 1536px — vitrines e galerias */
+
+  /* ======================================================================
+   * BORDAS E RAIOS
+   * ====================================================================== */
+  --radius-xs: 0.25rem; /*  4px — selos pequenos */
+  --radius-sm: 0.5rem; /*  8px — campos */
+  --radius-md: 0.875rem; /* 14px — cartões compactos */
+  --radius-lg: 1.25rem; /* 20px — cartões */
+  --radius-xl: 2rem; /* 32px — painéis e mídias de destaque */
+  /* Botões usam rounded-full (pílula). */
+
+  /* ======================================================================
+   * SOMBRAS (pensadas para fundo escuro: profundidade + brilho sutil)
+   * ====================================================================== */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.5);
+  --shadow-md: 0 10px 30px -12px rgb(0 0 0 / 0.7);
+  --shadow-lg: 0 30px 60px -24px rgb(0 0 0 / 0.85);
+  --shadow-glow: 0 12px 36px -12px rgb(237 28 46 / 0.55); /* só no hover do botão primário */
+  --inset-shadow-highlight: inset 0 1px 0 rgb(255 255 255 / 0.06); /* borda superior de luz */
+
+  /* ======================================================================
+   * MOVIMENTO
+   * ====================================================================== */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1); /* = power3.out (GSAP) */
+  --ease-snappy: cubic-bezier(0.2, 0.9, 0.3, 1.2); /* leve "pulo" em microinterações */
+  --duration-fast: 150ms; /* cor, opacidade */
+  --duration-base: 250ms; /* hover, deslocamentos pequenos */
+  --duration-slow: 500ms; /* entradas de conteúdo */
+
+  /*
+   * BREAKPOINTS (padrão Tailwind, mobile-first)
+   *   base < 640 celular · sm 640 · md 768 tablet · lg 1024 · xl 1280 desktop · 2xl 1536
    */
 }

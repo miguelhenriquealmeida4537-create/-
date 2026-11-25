@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './fonts.css';
 @import './tokens.css';
 
 /* ---------- Base ---------- */
@@ -17,8 +18,11 @@
     background-color: var(--color-surface);
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    font-size: var(--text-fluid-base);
-    line-height: 1.6;
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-feature-settings:
+      'cv11' 1,
+      'ss01' 1; /* Inter: "a" de um andar e dígitos mais legíveis */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -27,9 +31,11 @@
   h1,
   h2,
   h3,
-  h4 {
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
-    line-height: 1.1;
+    font-weight: 600;
     text-wrap: balance;
   }
 
@@ -53,17 +59,10 @@
   :focus-visible {
     outline: 2px solid var(--color-focus);
     outline-offset: 3px;
-    border-radius: 2px;
   }
 }
 
-/* ---------- Utilitários ---------- */
-@utility container-site {
-  width: 100%;
-  max-width: var(--container-site);
-  margin-inline: auto;
-  padding-inline: var(--spacing-gutter);
-}
+/* ---------- Utilitários do design system ---------- */
 
 /* Conteúdo apenas para leitores de tela que aparece ao receber foco */
 @utility sr-only-focusable {
@@ -80,11 +79,42 @@
   }
 }
 
+/* Link de texto: sublinhado que cresce da esquerda no hover/foco */
+@utility link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-bottom: 2px;
+  transition: background-size var(--duration-base) var(--ease-brand);
+
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 1px;
+  }
+}
+
+/* Cartão interativo: eleva, ganha borda mais clara e sombra no hover */
+@utility interactive-lift {
+  transition-property: transform, border-color, box-shadow, background-color;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-brand);
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-4px);
+      border-color: var(--color-border-strong);
+      box-shadow: var(--shadow-lg);
+    }
+  }
+}
+
 /* ---------- prefers-reduced-motion ---------- */
 /*
  * Rede de segurança global para CSS. As animações GSAP e o Lenis
  * respeitam a mesma preferência via MotionPreferenceProvider.
  * A escolha manual (html[data-motion]) tem prioridade sobre o sistema.
+ * Mudanças de cor continuam instantâneas; deslocamentos deixam de existir.
  */
 @media (prefers-reduced-motion: reduce) {
   html:not([data-motion='full']) {
@@ -99,6 +129,10 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  html:not([data-motion='full']) .interactive-lift:hover {
+    transform: none;
+  }
 }
 
 html[data-motion='reduce'] {
@@ -112,4 +146,8 @@ html[data-motion='reduce'] *::after {
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
   scroll-behavior: auto !important;
+}
+
+html[data-motion='reduce'] .interactive-lift:hover {
+  transform: none;
 }

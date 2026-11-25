@@ -10,8 +10,18 @@ const options: { value: MotionPreference; label: string }[] = [
   { value: 'full', label: 'Completo' },
 ]
 
+const screens = [
+  { href: '/', label: 'Identidade (Etapa 4)' },
+  { href: '/?demo=movimento', label: 'Movimento (Etapa 3)' },
+]
+
+interface DemoBannerProps {
+  /** Ex.: "Etapa 4 · Identidade visual" */
+  stage: string
+}
+
 /** Faixa que identifica a tela como demonstração técnica (fixa a partir do tablet). */
-export function DemoBanner() {
+export function DemoBanner({ stage }: DemoBannerProps) {
   const { reducedMotion, systemReducedMotion, preference, setPreference } = useMotionPreference()
   const { isSmooth } = useSmoothScroll()
 
@@ -20,20 +30,20 @@ export function DemoBanner() {
       aria-label="Aviso de demonstração técnica"
       className="relative z-50 border-b border-brand-red/40 bg-brand-black/90 backdrop-blur-md md:sticky md:top-0"
     >
-      <div className="container-site flex flex-col gap-3 py-3 md:flex-row md:items-center md:justify-between">
-        <p className="flex items-center gap-2 text-fluid-sm">
+      <div className="mx-auto flex w-full max-w-site flex-col gap-3 px-gutter py-3 md:flex-row md:items-center md:justify-between">
+        <p className="flex items-center gap-2 text-small">
           <FlaskConical className="size-4 shrink-0 text-accent" aria-hidden="true" />
           <span>
             <strong className="font-semibold tracking-wide text-accent uppercase">
               Demonstração técnica
             </strong>{' '}
             <span className="text-foreground-muted">
-              · Etapa 3 · não é a página oficial da Casa da Pizza
+              · {stage} · não é a página oficial da Casa da Pizza
             </span>
           </span>
         </p>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-fluid-sm">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-small">
           <p className="text-foreground-muted" aria-live="polite">
             Rolagem:{' '}
             <strong className="font-semibold text-foreground">
@@ -54,7 +64,7 @@ export function DemoBanner() {
             {options.map((o) => (
               <label
                 key={o.value}
-                className="cursor-pointer rounded-full px-3 py-1.5 text-fluid-sm has-checked:bg-brand-white has-checked:text-brand-black has-focus-visible:outline-2 has-focus-visible:outline-focus"
+                className="cursor-pointer rounded-full px-3 py-1.5 text-small has-checked:bg-brand-white has-checked:text-brand-black has-focus-visible:outline-2 has-focus-visible:outline-focus"
               >
                 <input
                   type="radio"
@@ -70,6 +80,27 @@ export function DemoBanner() {
           </fieldset>
         </div>
       </div>
+      <nav aria-label="Telas de demonstração" className="border-t border-border">
+        <ul className="mx-auto flex w-full max-w-site gap-5 overflow-x-auto px-gutter py-2 text-small">
+          {screens.map((sc) => {
+            const current =
+              sc.href === '/'
+                ? !window.location.search.includes('demo=')
+                : window.location.search.includes(sc.href.slice(2))
+            return (
+              <li key={sc.href} className="shrink-0">
+                <a
+                  href={sc.href}
+                  aria-current={current ? 'page' : undefined}
+                  className="link-underline text-foreground-subtle aria-[current=page]:text-foreground"
+                >
+                  {sc.label}
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      </nav>
       <ScrollProgress />
     </aside>
   )
