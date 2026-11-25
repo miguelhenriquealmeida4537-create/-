@@ -23,10 +23,11 @@ npm run format     # Prettier (ordena classes Tailwind)
 Copie `.env.example` para `.env.local`. Na Vercel, cadastre as mesmas variáveis em
 _Project Settings → Environment Variables_.
 
-| Variável                                       | Uso                                                                                                           |
-| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `VITE_SITE_URL`                                | Domínio final. Gera canonical, Open Graph, `sitemap.xml` e `robots.txt`. Sem ela, o build bloqueia indexação. |
-| `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` | Integração futura com Supabase (somente chave pública `anon`).                                                |
+| Variável                                       | Uso                                                                                                                                                                       |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VITE_SITE_URL`                                | Domínio final. Gera canonical, Open Graph, `sitemap.xml` e `robots.txt`. Sem ela, o build bloqueia indexação.                                                             |
+| `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` | Integração futura com Supabase (somente chave pública `anon`).                                                                                                            |
+| `VITE_SHOW_DEMO_CONTENT`                       | `true` exibe o cardápio de **teste** (`src/dev/demo-menu.ts`) enquanto o oficial está vazio. Sem a flag, os dados de teste ficam fora do build. Nunca ativar em produção. |
 
 ## Estrutura
 
@@ -83,6 +84,9 @@ Telas de demonstração (temporárias, `src/dev`): `/?demo=identidade` · `/?dem
   avaliações). Componentes leem via `src/services/`, preparado para migrar ao Supabase.
 - **Campo ausente = pendente**: o rodapé mostra "A confirmar"; seções sem dados não exibem
   valores inventados. Preencher somente com informações oficiais da Casa da Pizza.
+- **Cardápio**: produtos com tamanhos (`prices`) e grupos de opções (borda, adicionais) com
+  acréscimos fixos ou por tamanho; cálculo em `src/lib/pricing.ts`. Detalhe com transição
+  GSAP Flip entre cartão e painel.
 - Horários em `America/Sao_Paulo`; "Aberto agora" calculado por `src/lib/opening-hours.ts`.
 - **Foto do Hero**: `src/content/media.ts` (requisitos no arquivo). Sem foto, o Hero exibe um
   espaço reservado identificado. Nunca usar imagem gerada por IA como fotografia de produto.
