@@ -186,15 +186,46 @@ export interface Promotion {
 /* Avaliações                                                         */
 /* ------------------------------------------------------------------ */
 
+export interface ReviewSource {
+  /** Plataforma onde a avaliação foi publicada, ex.: "Google", "iFood" */
+  name: string
+  /** Link para a avaliação original (ou para o perfil, se o link direto não existir) */
+  url?: string
+}
+
+/**
+ * Avaliação VERIFICADA de cliente real.
+ * Regras: copiar o texto sem alterações (cortes só com "…"); usar apenas a
+ * identificação que o cliente tornou pública na plataforma ou autorizou.
+ */
 export interface Review {
   id: string
-  /** Como o cliente aparece publicamente na fonte (ex.: "Ana S.") */
+  /** Nome ou identificação autorizada, como aparece na fonte (ex.: "Ana S.") */
   author: string
   /** 1 a 5 */
   rating: 1 | 2 | 3 | 4 | 5
   text: string
-  /** Data ISO "AAAA-MM-DD" da avaliação original */
-  date: string
-  /** Onde a avaliação foi publicada — obrigatório (transparência) */
-  source: { name: string; url: string }
+  /** Data ISO "AAAA-MM-DD" da avaliação original, quando disponível */
+  date?: string
+  /** Origem — obrigatória (transparência) */
+  source: ReviewSource
+}
+
+/**
+ * Nota média OFICIAL de uma plataforma (ex.: perfil do Google).
+ * O site nunca calcula média própria: este resumo é copiado da fonte,
+ * com link e data da consulta para que qualquer pessoa possa verificar.
+ */
+export interface RatingSummary {
+  platform: string
+  /** Média exibida pela plataforma, ex.: 4.8 */
+  average: number
+  /** Escala máxima da plataforma (normalmente 5) */
+  scale: number
+  /** Total de avaliações informado pela plataforma */
+  count: number
+  /** Página pública onde a média pode ser conferida */
+  url: string
+  /** Data ISO "AAAA-MM-DD" em que os números foram consultados */
+  checkedAt: string
 }

@@ -5,7 +5,20 @@ import { cn } from '@/lib/cn'
  * TEMPORÁRIO — sinalização de conteúdo de teste (src/dev/demo-menu.ts).
  * Some junto com os dados de teste quando o cardápio oficial for cadastrado.
  */
-export function DemoContentNotice({ className }: { className?: string }) {
+const NOTICE_TEXT = {
+  menu: 'Produtos, fotos, opções e preços abaixo são apenas demonstrativos e não fazem parte do cardápio da Casa da Pizza.',
+  reviews:
+    'As avaliações abaixo são apenas demonstrativas: não são avaliações reais de clientes da Casa da Pizza.',
+}
+
+export function DemoContentNotice({
+  className,
+  subject = 'menu',
+}: {
+  className?: string
+  /** Qual conteúdo de teste está sendo sinalizado */
+  subject?: keyof typeof NOTICE_TEXT
+}) {
   return (
     <p
       role="note"
@@ -16,9 +29,8 @@ export function DemoContentNotice({ className }: { className?: string }) {
     >
       <FlaskConical className="mt-0.5 size-4 shrink-0 text-foreground" aria-hidden="true" />
       <span>
-        <strong className="font-semibold text-foreground">Conteúdo de teste.</strong> Produtos,
-        fotos, opções e preços abaixo são apenas demonstrativos e não fazem parte do cardápio da
-        Casa da Pizza.
+        <strong className="font-semibold text-foreground">Conteúdo de teste.</strong>{' '}
+        {NOTICE_TEXT[subject]}
       </span>
     </p>
   )
