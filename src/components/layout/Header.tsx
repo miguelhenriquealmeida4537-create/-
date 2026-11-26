@@ -2,8 +2,9 @@ import { Menu } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { Logo } from '@/components/brand/Logo'
 import { MobileMenu } from '@/components/layout/MobileMenu'
-import { mainNav } from '@/components/layout/navigation'
+import { mainNav, mainNavIds } from '@/components/layout/navigation'
 import { Button, Container } from '@/components/ui'
+import { useActiveSection } from '@/hooks/useActiveSection'
 import { useScrolled } from '@/hooks/useScrolled'
 import { useFeaturedLogoVisible } from '@/lib/brand-presence'
 import { cn } from '@/lib/cn'
@@ -20,6 +21,8 @@ export function Header() {
   const scrolled = useScrolled(24)
   // Enquanto o selo grande do Hero está visível, a logo do Header se recolhe
   const logoHidden = useFeaturedLogoVisible()
+  // Seção no centro da tela: destacada na navegação (aria-current)
+  const activeId = useActiveSection(mainNavIds)
   const [menuOpen, setMenuOpen] = useState(false)
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
@@ -67,7 +70,8 @@ export function Header() {
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    className="link-underline text-small font-medium tracking-[0.08em] text-foreground-muted uppercase transition-colors hover:text-foreground"
+                    aria-current={activeId === item.href.slice(1) ? 'location' : undefined}
+                    className="link-underline text-small font-medium tracking-[0.08em] text-foreground-muted uppercase transition-colors hover:text-foreground aria-[current=location]:[background-size:100%_1px] aria-[current=location]:text-foreground"
                   >
                     {item.label}
                   </a>
@@ -98,7 +102,7 @@ export function Header() {
         </Container>
       </header>
       {/* Fora do <header>: o backdrop-filter dele não deve afetar o menu */}
-      <MobileMenu id={MENU_ID} open={menuOpen} onClose={closeMenu} />
+      <MobileMenu id={MENU_ID} open={menuOpen} onClose={closeMenu} activeId={activeId} />
     </>
   )
 }

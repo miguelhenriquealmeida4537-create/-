@@ -8,7 +8,6 @@
  * Exibidas apenas com conteúdo de teste habilitado e sem avaliações oficiais.
  */
 import type { Review } from '@/content/types'
-import { todayISO } from '@/lib/dates'
 
 const TEXT =
   'Texto de exemplo de uma avaliação, usado apenas para validar o layout. Não é uma avaliação real.'
@@ -17,14 +16,8 @@ const LONG =
   'Este conteúdo não é uma avaliação real e existe somente para verificar como cartões com textos extensos se comportam no celular, no tablet e no desktop. ' +
   'O texto completo continua disponível ao expandir, sem qualquer alteração. Fim do texto de exemplo.'
 
-const shift = (today: string, days: number) => {
-  const d = new Date(`${today}T12:00:00Z`)
-  d.setUTCDate(d.getUTCDate() - days)
-  return d.toISOString().slice(0, 10)
-}
-
-export function buildDemoReviews(now: Date = new Date()): Review[] {
-  const today = todayISO(now)
+/** Datas FIXAS (não relativas a hoje): o HTML pré-renderizado e o navegador mostram o mesmo. */
+export function buildDemoReviews(): Review[] {
   const src = (n: number, withLink = true) => ({
     name: 'Plataforma de teste',
     url: withLink ? `https://example.com/avaliacao-de-teste-${n}` : undefined,
@@ -35,7 +28,7 @@ export function buildDemoReviews(now: Date = new Date()): Review[] {
       author: 'Cliente de teste 1',
       rating: 5,
       text: TEXT,
-      date: shift(today, 3),
+      date: '2026-11-22',
       source: src(1),
     },
     {
@@ -43,7 +36,7 @@ export function buildDemoReviews(now: Date = new Date()): Review[] {
       author: 'Cliente de teste 2',
       rating: 4,
       text: LONG,
-      date: shift(today, 12),
+      date: '2026-11-13',
       source: src(2),
     },
     {
@@ -51,7 +44,7 @@ export function buildDemoReviews(now: Date = new Date()): Review[] {
       author: 'Cliente de teste 3',
       rating: 5,
       text: TEXT,
-      date: shift(today, 20),
+      date: '2026-11-05',
       source: src(3, false),
     },
     {
@@ -59,7 +52,7 @@ export function buildDemoReviews(now: Date = new Date()): Review[] {
       author: 'Cliente de teste 4',
       rating: 3,
       text: TEXT,
-      date: shift(today, 41),
+      date: '2026-10-15',
       source: src(4),
     },
     { id: 'teste-5', author: 'Cliente de teste 5', rating: 5, text: TEXT, source: src(5) },
@@ -68,7 +61,7 @@ export function buildDemoReviews(now: Date = new Date()): Review[] {
       author: 'Cliente de teste 6',
       rating: 4,
       text: TEXT,
-      date: shift(today, 64),
+      date: '2026-09-22',
       source: src(6),
     },
     {
@@ -76,7 +69,7 @@ export function buildDemoReviews(now: Date = new Date()): Review[] {
       author: 'Cliente de teste 7',
       rating: 5,
       text: TEXT,
-      date: shift(today, 90),
+      date: '2026-08-27',
       source: src(7),
     },
     { id: 'teste-8', author: 'Cliente de teste 8', rating: 4, text: TEXT, source: src(8, false) },

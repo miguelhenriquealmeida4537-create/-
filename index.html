@@ -4,9 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-    <!-- Valores base: o componente <Seo> sobrescreve por página -->
+    <!-- seo:start — no build, substituído pelas meta tags completas (scripts/prerender.mjs) -->
     <title>Casa da Pizza</title>
     <meta name="description" content="Site oficial da Casa da Pizza." />
+    <!-- seo:end -->
 
     <meta name="theme-color" content="#080808" />
     <meta name="color-scheme" content="dark" />
@@ -19,11 +20,9 @@
   </head>
   <body>
     <noscript>
-      <p style="padding: 1rem; font-family: system-ui, sans-serif">
-        Ative o JavaScript para visualizar o site da Casa da Pizza.
-      </p>
+      <p class="p-4 font-sans">Ative o JavaScript para visualizar o site da Casa da Pizza.</p>
     </noscript>
-    <div id="root"></div>
+    <div id="root"><!--app--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

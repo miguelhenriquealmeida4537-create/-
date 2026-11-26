@@ -16,8 +16,11 @@ export function buildRestaurantJsonLd(config: SiteConfig): JsonLd {
   return compact({
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
+    '@id': config.url ? `${config.url}/#restaurante` : undefined,
     name: config.name,
     url: config.url,
+    logo: config.logo && config.url ? `${config.url}${config.logo}` : undefined,
+    hasMenu: config.url ? `${config.url}/#cardapio` : undefined,
     description: config.description,
     image: config.ogImage && config.url ? `${config.url}${config.ogImage}` : undefined,
     telephone: b.telephone,

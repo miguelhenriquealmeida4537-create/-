@@ -12,6 +12,7 @@ interface RatingProps {
 /**
  * Estrelas de avaliação. Para leitores de tela, um único texto: "Nota 4 de 5".
  * Estrelas em branco (marcadas) e cinza (vazias) — sem depender só de cor.
+ * Preenchimento por classes (sem style inline), compatível com a CSP.
  */
 export function Rating({ value, max = 5, size = 'sm', className }: RatingProps) {
   const label = `Nota ${new Intl.NumberFormat('pt-BR').format(value)} de ${max}`
@@ -23,14 +24,17 @@ export function Rating({ value, max = 5, size = 'sm', className }: RatingProps) 
       className={cn('inline-flex items-center gap-0.5', className)}
     >
       {Array.from({ length: max }, (_, i) => {
-        const fill = Math.max(0, Math.min(1, value - i)) // 0, 0.5 ou 1
+        // arredonda para meia estrela: 0, 0.5 ou 1
+        const fill = Math.round(Math.max(0, Math.min(1, value - i)) * 2) / 2
         return (
           <span key={i} className={cn('relative inline-block', icon)} aria-hidden="true">
             <Star className={cn(icon, 'text-border-strong')} strokeWidth={1.5} />
             {fill > 0 && (
               <span
-                className="absolute inset-0 overflow-hidden"
-                style={{ width: `${fill * 100}%` }}
+                className={cn(
+                  'absolute inset-y-0 left-0 overflow-hidden',
+                  fill === 1 ? 'w-full' : 'w-1/2',
+                )}
               >
                 <Star className={cn(icon, 'fill-foreground text-foreground')} strokeWidth={1.5} />
               </span>

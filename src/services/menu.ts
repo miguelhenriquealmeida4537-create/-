@@ -61,10 +61,13 @@ export interface HighlightsData {
 
 /**
  * Destaques: mais vendidos (marcados no cardápio), combos disponíveis e
- * promoções vigentes. Promoções vencidas ou futuras nunca são retornadas.
+ * promoções vigentes. Promoções vencidas ou futuras nunca são retornadas;
+ * com `now` null (build), nenhuma promoção é retornada — a validade é sempre
+ * decidida no navegador, na data real do visitante.
  */
-export function getHighlights(now: Date = new Date()): HighlightsData {
-  const today = todayISO(now)
+export function getHighlights(now: Date | null): HighlightsData {
+  // Sem "agora" (pré-renderização/hidratação), promoções não são decididas
+  const today = now ? todayISO(now) : ''
   return {
     isDemo: useDemo,
     today,
@@ -79,13 +82,13 @@ export function getHighlights(now: Date = new Date()): HighlightsData {
           product: item.productId ? getProductById(item.productId) : undefined,
         })),
       })),
-    promotions: source.promotions
+    promotions: (now ? source.promotions : [])
       .filter((p) => isWithin(p.validFrom, p.validUntil, today))
       .sort((a, b) => a.validUntil.localeCompare(b.validUntil)),
   }
 }
 
 /** Promoções vigentes (atalho mantido por compatibilidade). */
-export function getActivePromotions(now: Date = new Date()): Promotion[] {
+export function getActivePromotions(now: Date): Promotion[] {
   return getHighlights(now).promotions
 }

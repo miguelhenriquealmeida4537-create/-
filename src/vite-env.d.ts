@@ -5,6 +5,7 @@ interface ImportMetaEnv {
   readonly VITE_SUPABASE_URL?: string
   readonly VITE_SUPABASE_ANON_KEY?: string
   readonly VITE_SHOW_DEMO_CONTENT?: string
+  readonly VITE_ALLOW_INDEXING?: string
 }
 
 interface ImportMeta {

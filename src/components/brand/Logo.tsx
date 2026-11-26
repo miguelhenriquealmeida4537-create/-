@@ -32,13 +32,11 @@ const FALLBACK = Object.entries(webp).find(([p]) => p.endsWith('-256.webp'))?.[1
 
 interface LogoProps {
   /**
-   * Diâmetro exibido em px CSS. O navegador escolhe o arquivo ideal para a tela.
-   * Com `fluid`, é só o tamanho de referência e o diâmetro vem do className.
+   * Diâmetro em px CSS (atributos width/height). Para tamanho responsivo, use
+   * classes no className (ex.: "size-36 lg:size-88"), que se sobrepõem a ele.
    */
   size: number
-  /** Diâmetro controlado por classes responsivas (ex.: "size-36 lg:size-88"). */
-  fluid?: boolean
-  /** Atributo sizes quando `fluid` (ex.: "(min-width: 1024px) 352px, 144px"). */
+  /** Atributo sizes para tamanho responsivo (ex.: "(min-width: 1024px) 352px, 144px"). */
   sizes?: string
   ref?: Ref<HTMLImageElement>
   /** Texto alternativo. Use "" quando um link ao redor já tiver rótulo. */
@@ -52,7 +50,6 @@ export function Logo({
   size,
   alt = 'Casa da Pizza — Da nossa casa, pra sua casa',
   priority = false,
-  fluid = false,
   sizes: sizesProp,
   ref,
   className,
@@ -66,6 +63,7 @@ export function Logo({
         ref={ref}
         src={FALLBACK}
         alt={alt}
+        // width/height definem o tamanho (sem style inline: compatível com a CSP)
         width={size}
         height={size}
         loading={priority ? 'eager' : 'lazy'}
@@ -73,7 +71,6 @@ export function Logo({
         fetchPriority={priority ? 'high' : 'auto'}
         draggable={false}
         className={cn('block aspect-square select-none', className)}
-        style={fluid ? undefined : { width: size, height: size }}
       />
     </picture>
   )

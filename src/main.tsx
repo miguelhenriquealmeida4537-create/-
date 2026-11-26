@@ -1,19 +1,18 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import App from '@/App'
-import { gsap, ScrollTrigger } from '@/lib/gsap'
 import '@/styles/globals.css'
 
 const root = document.getElementById('root')
 if (!root) throw new Error('Elemento #root não encontrado em index.html')
 
-// Apenas em desenvolvimento: expõe o GSAP para inspeção (removido do build de produção).
-if (import.meta.env.DEV) {
-  Object.assign(window, { __motionDebug: { gsap, ScrollTrigger } })
-}
-
-createRoot(root).render(
+const app = (
   <StrictMode>
     <App />
-  </StrictMode>,
+  </StrictMode>
 )
+
+// Build de produção: o HTML já vem pré-renderizado → o React só "hidrata".
+// Desenvolvimento (npm run dev): renderização normal no navegador.
+if (root.hasChildNodes()) hydrateRoot(root, app)
+else createRoot(root).render(app)

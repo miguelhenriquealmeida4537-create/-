@@ -42,7 +42,16 @@ export function Seo({
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       {canonical && <meta property="og:url" content={canonical} />}
-      {imageUrl && <meta property="og:image" content={imageUrl} />}
+      {imageUrl && (
+        <>
+          <meta property="og:image" content={imageUrl} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          {siteConfig.ogImageAlt && (
+            <meta property="og:image:alt" content={siteConfig.ogImageAlt} />
+          )}
+        </>
+      )}
 
       {/* Twitter / X */}
       <meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />

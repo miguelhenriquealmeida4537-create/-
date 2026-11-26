@@ -1,19 +1,15 @@
-import { useEffect, useState } from 'react'
 import type { BusinessInfo } from '@/content/types'
+import { useClientNow } from '@/hooks/useClientNow'
 import { cn } from '@/lib/cn'
 import { isOpenAt } from '@/lib/opening-hours'
 
 /**
  * "Aberto agora" / "Fechado agora", calculado no fuso da pizzaria e
- * atualizado a cada minuto. Sem horários cadastrados, não exibe nada.
+ * atualizado a cada minuto, apenas no navegador. Sem horários, não exibe nada.
  */
 export function OpeningStatus({ business }: { business: BusinessInfo }) {
-  const [now, setNow] = useState(() => new Date())
-
-  useEffect(() => {
-    const id = window.setInterval(() => setNow(new Date()), 60_000)
-    return () => window.clearInterval(id)
-  }, [])
+  const now = useClientNow()
+  if (!now) return null // calculado só no navegador (nunca na data do build)
 
   const open = isOpenAt(business.openingHours, now, business.timeZone)
   if (open === null) return null

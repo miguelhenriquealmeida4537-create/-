@@ -46,23 +46,45 @@ export function Hero() {
 
   useGSAP(
     () => {
+      const section = rootRef.current
+      /*
+       * O HTML pré-renderizado chega com data-hero-intro: o CSS mantém o conteúdo
+       * oculto até o JS iniciar a entrada (ou revela sozinho após 1,6s, se o JS
+       * atrasar). Ao assumir aqui, o atributo sai e a timeline parte do oculto.
+       */
+      const late = performance.now() > 1500
+      section?.removeAttribute('data-hero-intro')
       if (reducedMotion) return
       const q = gsap.utils.selector(rootRef)
 
-      gsap
-        .timeline({ defaults: { ease: EASE_BRAND } })
-        .from(
-          q('[data-hero-media]'),
-          { scale: 1.1, opacity: 0, duration: 1.8, ease: 'power2.out' },
-          0,
-        )
-        .from(q('[data-hero-logo]'), { scale: 0.9, opacity: 0, duration: 1.1 }, 0.2)
-        .from(q('[data-hero-line]'), { yPercent: 110, duration: 1.1, stagger: 0.12 }, 0.4)
-        .from(
-          q('[data-hero-fade]'),
-          { y: 16, opacity: 0, duration: 0.8, stagger: 0.08, clearProps: 'transform,opacity' },
-          0.85,
-        )
+      if (!late) {
+        gsap
+          .timeline({ defaults: { ease: EASE_BRAND } })
+          .fromTo(
+            q('[data-hero-media]'),
+            { scale: 1.1, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 1.8, ease: 'power2.out' },
+            0,
+          )
+          .fromTo(
+            q('[data-hero-logo]'),
+            { scale: 0.9, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 1.1 },
+            0.2,
+          )
+          .fromTo(
+            q('[data-hero-line]'),
+            { yPercent: 110, opacity: 1 },
+            { yPercent: 0, duration: 1.1, stagger: 0.12, clearProps: 'transform' },
+            0.4,
+          )
+          .fromTo(
+            q('[data-hero-fade]'),
+            { y: 16, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.8, stagger: 0.08, clearProps: 'transform,opacity' },
+            0.85,
+          )
+      }
 
       const mm = gsap.matchMedia()
       // Uma condição para cada faixa: o matchMedia só executa quando alguma é verdadeira
@@ -97,6 +119,7 @@ export function Hero() {
     <section
       ref={rootRef}
       id="topo"
+      data-hero-intro=""
       aria-labelledby="hero-titulo"
       className="relative isolate flex min-h-svh overflow-hidden"
     >
@@ -125,7 +148,6 @@ export function Hero() {
             <Logo
               ref={logoRef}
               size={352}
-              fluid
               priority
               sizes="(min-width: 1280px) 352px, (min-width: 1024px) 288px, (min-width: 640px) 176px, 136px"
               className="size-34 drop-shadow-[0_24px_48px_rgb(0_0_0/0.6)] sm:size-44 lg:size-72 xl:size-88"
@@ -198,7 +220,7 @@ export function Hero() {
       <a
         href="#cardapio"
         data-hero-fade
-        aria-label="Ir para o cardápio"
+        aria-label="Role até o cardápio"
         className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 text-caption tracking-[0.2em] text-foreground-subtle uppercase transition-colors hover:text-foreground sm:flex"
       >
         Role

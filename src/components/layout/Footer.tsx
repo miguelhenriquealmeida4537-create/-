@@ -169,7 +169,7 @@ export function Footer() {
 
       <div className="border-t border-border">
         <Container className="flex flex-col-reverse gap-4 py-6 text-small text-foreground-subtle sm:flex-row sm:items-center sm:justify-between">
-          <p>
+          <p suppressHydrationWarning>
             © {year} {b.name}. Fontes{' '}
             {FONT_LICENSES.map((f, i) => (
               <span key={f.file}>

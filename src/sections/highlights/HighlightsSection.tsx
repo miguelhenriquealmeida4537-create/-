@@ -5,6 +5,7 @@ import { DemoContentNotice } from '@/dev/DemoContent'
 import { BestSellerCard } from '@/sections/highlights/BestSellerCard'
 import { ComboCard } from '@/sections/highlights/ComboCard'
 import { PromotionCard } from '@/sections/highlights/PromotionCard'
+import { useClientNow } from '@/hooks/useClientNow'
 import { getHighlights } from '@/services/menu'
 
 function Block({
@@ -41,8 +42,10 @@ function Block({
  * Cada bloco só aparece se houver dados; sem nenhum, a seção mostra a pendência.
  */
 export function HighlightsSection() {
-  const { bestSellers, combos, promotions, today, isDemo } = getHighlights()
-  const empty = bestSellers.length + combos.length + promotions.length === 0
+  const now = useClientNow()
+  const { bestSellers, combos, promotions, today, isDemo } = getHighlights(now)
+  // Antes de saber a data (build/hidratação) não afirma que está vazio
+  const empty = now !== null && bestSellers.length + combos.length + promotions.length === 0
   const [featuredPromo, ...otherPromos] = promotions
 
   return (

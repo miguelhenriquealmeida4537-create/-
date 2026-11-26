@@ -5,3 +5,6 @@ export const mainNav = [
   { href: '#avaliacoes', label: 'Avaliações' },
   { href: '#contato', label: 'Contato' },
 ] as const
+
+/** Ids das seções correspondentes (para destacar a seção atual). */
+export const mainNavIds = mainNav.map((item) => item.href.slice(1))

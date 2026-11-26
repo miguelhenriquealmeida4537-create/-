@@ -1,6 +1,7 @@
 import { useRef, type ElementType, type ReactNode } from 'react'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { EASE_BRAND, gsap, useGSAP } from '@/lib/gsap'
+import { alreadySeen } from '@/lib/motion-gate'
 
 interface RevealProps {
   children: ReactNode
@@ -43,7 +44,7 @@ export function Reveal({
   useGSAP(
     () => {
       const el = ref.current
-      if (!el || reducedMotion) return
+      if (!el || reducedMotion || alreadySeen(el)) return
 
       const targets = stagger !== undefined ? Array.from(el.children) : el
 

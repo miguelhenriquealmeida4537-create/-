@@ -4,20 +4,23 @@ import type { Plugin } from 'vite'
 const ROUTES = ['/']
 
 /**
- * Gera robots.txt e sitemap.xml no build a partir de VITE_SITE_URL.
- * Sem URL definida, publica um robots.txt que bloqueia indexação
- * (evita que um preview sem domínio seja indexado).
+ * Gera robots.txt e sitemap.xml no build.
+ * A indexação só é liberada com VITE_SITE_URL definida E VITE_ALLOW_INDEXING=true
+ * (lançamento). Em qualquer outro caso, robots.txt bloqueia tudo e não há sitemap —
+ * previews e o protótipo nunca são indexados.
  */
-export function seoFiles(siteUrl: string | undefined): Plugin {
+export function seoFiles(siteUrl: string | undefined, allowIndexing: boolean): Plugin {
   const base = siteUrl?.trim().replace(/\/+$/, '')
 
   return {
     name: 'casa-da-pizza:seo-files',
     apply: 'build',
     generateBundle() {
-      if (!base) {
+      if (!base || !allowIndexing) {
         this.warn(
-          'VITE_SITE_URL não definida: robots.txt bloqueará indexação e não haverá sitemap.',
+          !base
+            ? 'VITE_SITE_URL não definida: robots.txt bloqueará indexação e não haverá sitemap.'
+            : 'VITE_ALLOW_INDEXING diferente de "true": robots.txt bloqueará indexação.',
         )
         this.emitFile({
           type: 'asset',

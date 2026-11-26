@@ -12,6 +12,8 @@ export const env = {
   supabaseUrl: trimOrUndefined(import.meta.env.VITE_SUPABASE_URL),
   supabaseAnonKey: trimOrUndefined(import.meta.env.VITE_SUPABASE_ANON_KEY),
   isDev: import.meta.env.DEV,
+  /** Liberar indexação por buscadores (só no lançamento, com domínio e dados oficiais). */
+  allowIndexing: import.meta.env.VITE_ALLOW_INDEXING === 'true',
 } as const
 
 export const isSupabaseConfigured = Boolean(env.supabaseUrl && env.supabaseAnonKey)

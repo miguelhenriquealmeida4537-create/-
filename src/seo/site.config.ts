@@ -16,7 +16,13 @@ export interface SiteConfig {
   language: string
   description: string
   themeColor: string
+  /** Imagem de compartilhamento (caminho público, 1200×630) */
   ogImage?: string
+  ogImageAlt?: string
+  /** Logo para dados estruturados (caminho público) */
+  logo?: string
+  /** Indexação liberada: exige VITE_ALLOW_INDEXING=true E domínio definido */
+  allowIndexing: boolean
   business: {
     telephone?: string
     email?: string
@@ -75,6 +81,11 @@ export const siteConfig: SiteConfig = {
   language: 'pt-BR',
   description: `${business.name} — ${business.slogan}.`, // TODO: descrição definitiva do cliente
   themeColor: '#080808',
-  ogImage: undefined, // TODO: /og/og-default.jpg (1200×630) quando houver foto oficial
+  // Gerada por scripts/process-logo.py: selo oficial sobre o preto da marca.
+  // Trocar por uma foto oficial quando houver (mesmo tamanho: 1200×630).
+  ogImage: '/og/og-default.jpg',
+  ogImageAlt: 'Logo da Casa da Pizza — Da nossa casa, pra sua casa',
+  logo: '/brand/logo-casa-da-pizza-selo.png',
+  allowIndexing: env.allowIndexing && Boolean(env.siteUrl),
   business: toSchemaBusiness(business),
 }

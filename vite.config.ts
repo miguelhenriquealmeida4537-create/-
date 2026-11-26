@@ -9,7 +9,12 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
 
   return {
-    plugins: [react(), tailwindcss(), seoFiles(env.VITE_SITE_URL), fontPreload()],
+    plugins: [
+      react(),
+      tailwindcss(),
+      seoFiles(env.VITE_SITE_URL, env.VITE_ALLOW_INDEXING === 'true'),
+      fontPreload(),
+    ],
     define: {
       /*
        * Conteúdo de TESTE (src/dev/demo-menu.ts): constante de build para que,

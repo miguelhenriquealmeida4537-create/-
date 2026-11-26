@@ -98,9 +98,17 @@ def main() -> None:
         master.resize((s, s), Image.Resampling.LANCZOS).save(PUBLIC / f"icon-{s}.png", optimize=True)
     on_black(master, 180, 164).save(PUBLIC / "apple-touch-icon.png", optimize=True)
 
+    # imagem de compartilhamento (Open Graph): selo centralizado sobre o preto, 1200×630
+    (PUBLIC / "og").mkdir(parents=True, exist_ok=True)
+    og = Image.new("RGBA", (1200, 630), BRAND_BLACK)
+    badge = master.resize((500, 500), Image.Resampling.LANCZOS)
+    og.alpha_composite(badge, ((1200 - 500) // 2, (630 - 500) // 2))
+    og.convert("RGB").save(PUBLIC / "og" / "og-default.jpg", quality=88, optimize=True, progressive=True)
+
     print("arquivos gerados:")
     for p in sorted(list(ASSETS.glob("logo-selo-*")) + list(PUBLIC.glob("icon-*.png"))
-                    + [PUBLIC / "apple-touch-icon.png", PUBLIC / "brand" / "logo-casa-da-pizza-selo.png"]):
+                    + [PUBLIC / "apple-touch-icon.png", PUBLIC / "brand" / "logo-casa-da-pizza-selo.png",
+                       PUBLIC / "og" / "og-default.jpg"]):
         print(f"  {p.relative_to(ROOT)}  {p.stat().st_size / 1024:.1f} KB")
 
 
